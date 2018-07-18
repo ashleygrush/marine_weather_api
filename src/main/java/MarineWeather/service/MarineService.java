@@ -1,6 +1,7 @@
 package MarineWeather.service;
 
-import MarineWeather.controller.SecurityControl;
+//import MarineWeather.controller.SecurityControl;
+
 import MarineWeather.mappers.MarineMapper;
 import MarineWeather.model.MarineWeather.WWORoot;
 import MarineWeather.model.MarineWeather.Weather;
@@ -31,15 +32,17 @@ public class MarineService {
     @Autowired
     MarineMapper mapper;
 
-    @Autowired
-    SecurityControl securityControl;
+//    @Autowired
+//    SecurityControl securityControl;
 
     // searches Marine weather for location results - - location format: (48.834,2.394).
-    public WWORoot searchMW(@RequestParam String location
-                            @RequestParam (API_Key) String API_KEY) {
+    public WWORoot searchMW(@RequestParam String location) {
+
+        final String API_KEY = "5e6a5cd41fa34d94b3f232909181207";
 
         String url = "http://api.worldweatheronline.com/premium/v1/marine.ashx?key=" + API_KEY + "&format=json&q=" + location;
 
+        System.out.println(url);
         // searches for location in URL.
         WWORoot wwoResponse = restTemplate.getForObject(url, WWORoot.class);
         {
@@ -59,23 +62,18 @@ public class MarineService {
         // pulls information from Weather array
         for (Weather weather : data.getData().getWeather()) {
 
-            // set new values into ID
+            // set new values onto temp Database
             tempDB.setDate(weather.getDate());
             tempDB.setMaxtempF(weather.getMaxtempF());
             tempDB.setMintempF(weather.getMintempF());
-            tempDB.setLocation(location);
+            tempDB.setLocation(data.getData().getRequest()[0].getQuery());
+            tempDB.setPrettyLocation(location);
 
-            String tempDate = weather.getDate();
-            // check for duplicate locations in database
-
-            //if true, find id and UPDATE database
-            if (mapper.duplicateSearch(tempDate, location) == true) {
-                // set temp ID to find ID
-                System.out.println("duplicate information found.");
-                return;
-            } else {
-                // maps variables to database method in Mapper class
-                mapper.insertLocationWeathertoDB(tempDB);
+            // double checks values for duplicates (inserts new data if none are found)
+            try {
+                mapper.duplicateSearch(tempDB);
+            } catch (Exception e){
+                System.out.println("duplicate found: " + tempDB.toString());
             }
         }
     }
@@ -107,11 +105,9 @@ public class MarineService {
         // compare DB ID (removeID) to searched "id" (id)
         if (removeID.getId() == id) ;
         {
-
             // remove ID from DB
             removeID.setId(mapper.deleteByIDfromDB(id));
         }
-
         // if no results; return DB ID (remove ID)
         return removeID;
     }

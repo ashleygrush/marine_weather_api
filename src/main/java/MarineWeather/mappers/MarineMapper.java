@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.websocket.server.PathParam;
+
 @Mapper
 public interface MarineMapper {
 
@@ -39,13 +41,14 @@ public interface MarineMapper {
             "FROM marineweather.locationweather " +
             "WHERE date = #{date}";
 
+    // CHECKS FOR DUPLICATE VALUES
     String CHECK_DUPLICATES = "INSERT INTO marineweather.locationweather " +
-            "(date, maxtempF, mintempF, location) " +
-            "SELECT " +
-            "#{date}, #{maxtempF}, #{mintempF}, #{location}" +
-            "WHERE " +
-            "NOT EXISTS (SELECT * FROM marineweather.locationweather " +
-            "WHERE date = #{date} AND location = #{location})";
+                                        "(date, maxtempF, mintempF, location) " +
+                                    "SELECT " +
+                                        "#{date}, #{maxtempF}, #{mintempF}, #{location} " +
+                                "WHERE " +
+                                    "NOT EXISTS (SELECT * FROM marineweather.locationweather " +
+                                         "WHERE date = #{date} AND location = #{location})";
 
     String FIND_ID = "SELECT id " +
             "FROM marineweather.locationweather " +
@@ -58,7 +61,7 @@ public interface MarineMapper {
 
     // returns id results into LocationWeather array
     @Select(SELECT_BY_ID)
-    public  LocationWeather selectByID(@PathVariable("id")int id);
+    public  LocationWeather selectByID(int id);
 
     @Delete(DELETE_BY_ID)
     public int deleteByIDfromDB(int id);
@@ -67,16 +70,16 @@ public interface MarineMapper {
     public int insertUpdateByID(LocationWeather locationWeather);
 
     @Select(CHECK_DUPLICATE_LOC)
-    public Boolean checkDuplicateLoc(@PathVariable("location") String location);
+    public Boolean checkDuplicateLoc(String location);
 
     @Select(CHECK_DUPLICATE_DATE)
-    public Boolean checkDuplicateDate(@PathVariable("date") String date);
+    public Boolean checkDuplicateDate(String date);
 
+    // inserts results from "Fill Database" method
     @Select(CHECK_DUPLICATES)
-    public boolean duplicateSearch(@PathVariable("date") String date,
-                                  @PathVariable("location") String location);
+    public int duplicateSearch(LocationWeather locationWeather);
 
     @Select(FIND_ID)
-    public int findID(@PathVariable("location") String location);
+    public int findID(String location);
 
 }

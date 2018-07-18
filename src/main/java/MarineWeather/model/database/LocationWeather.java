@@ -8,6 +8,7 @@ public class LocationWeather {
     int maxtempF;
     int  mintempF;
     String location;
+    String prettyLocation;
 
 
     public LocationWeather() {
@@ -60,6 +61,26 @@ public class LocationWeather {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getPrettyLocation() {
+        return prettyLocation;
+    }
+
+    public void setPrettyLocation(String prettyLocation) {
+        this.prettyLocation = prettyLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "LocationWeather{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", maxtempF=" + maxtempF +
+                ", mintempF=" + mintempF +
+                ", location='" + location + '\'' +
+                ", prettyLocation='" + prettyLocation + '\'' +
+                '}';
     }
 }
 
