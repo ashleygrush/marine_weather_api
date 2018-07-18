@@ -8,6 +8,7 @@ public class LocationWeather {
     int maxtempF;
     int  mintempF;
     String location;
+    // used to import location from user search parameters
     String prettyLocation;
 
 

@@ -14,7 +14,7 @@ import MarineWeather.service.MarineService;
 @RestController
 
 // maps to URL location
-@RequestMapping("/marineweather")
+@RequestMapping("/marineweather") // http://localhost:8080/marineweather/
 public class MarineControl {
 
     // connected to bean in MarineService class
@@ -26,6 +26,7 @@ public class MarineControl {
     public WWORoot search(
             @RequestParam("location") String location) {
 
+        // sets data to search method in service class
         WWORoot response = marineService.searchMW(location);
 
         return response;
@@ -36,7 +37,7 @@ public class MarineControl {
     @RequestMapping("/{id}") // http://localhost:8080/marineweather/1
     public DBSearch searchDB(
             @PathVariable("id") int id) {
-
+        // returns id to database search method in service class
         return marineService.dbSearch(id);
     }
 
@@ -45,7 +46,7 @@ public class MarineControl {
     @DeleteMapping("/{id}") //in Postman - http://localhost:8080/marineweather/delete/1
     public DBSearch deleteID(
             @PathVariable("id") int id) {
-
+        // returns id to delete method in service class
         return marineService.deleteID(id);
     }
 
@@ -55,6 +56,7 @@ public class MarineControl {
     public LocationWeather insertNew(
         @RequestBody LocationWeather locationweather) {
 
+        // returns database "map" to insert new method in service class
         return marineService.insertNew(locationweather);
     }
 
@@ -64,7 +66,7 @@ public class MarineControl {
     public LocationWeather updateID(
             @PathVariable("id") int id,
             @RequestBody LocationWeather locationWeather) {
-
+        // returns id and updated database "map" to update method in service class
         return marineService.updateID(id, locationWeather);
     }
 }

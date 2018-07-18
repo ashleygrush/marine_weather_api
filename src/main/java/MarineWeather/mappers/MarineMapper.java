@@ -20,26 +20,16 @@ public interface MarineMapper {
     // searches database by ID number
     String SELECT_BY_ID = "SELECT * FROM marineweather.locationweather where id like #{id}";
 
+    // removes row from database by ID number
     String DELETE_BY_ID = "DELETE FROM marineweather.locationweather where #{id} = id";
 
+    // updates row of information in database by ID number
     String UPDATE_BY_ID = "UPDATE `marineweather`.locationweather "+
             "SET date = #{date}, " +
             "maxtempF = #{maxtempF}, " +
             "mintempF = #{mintempF}, " +
             "location = #{location} " +
             "WHERE id = #{id}";
-
-    String CHECK_DUPLICATE_LOC = "SELECT CASE " +
-            "WHEN COUNT(location)>6 THEN 1 " +
-            "ELSE 0 END Result " +
-            "FROM marineweather.locationweather " +
-            "WHERE location = #{location}";
-
-    String CHECK_DUPLICATE_DATE = "SELECT CASE " +
-            "WHEN COUNT(date)>0 THEN 1 " +
-            "ELSE 0 END Result " +
-            "FROM marineweather.locationweather " +
-            "WHERE date = #{date}";
 
     // CHECKS FOR DUPLICATE VALUES
     String CHECK_DUPLICATES = "INSERT INTO marineweather.locationweather " +
@@ -50,6 +40,7 @@ public interface MarineMapper {
                                     "NOT EXISTS (SELECT * FROM marineweather.locationweather " +
                                          "WHERE date = #{date} AND location = #{location})";
 
+    // selects ID number from database by location
     String FIND_ID = "SELECT id " +
             "FROM marineweather.locationweather " +
             "WHERE location = #{location}";
@@ -63,22 +54,19 @@ public interface MarineMapper {
     @Select(SELECT_BY_ID)
     public  LocationWeather selectByID(int id);
 
+    // returns id results to remove from database
     @Delete(DELETE_BY_ID)
     public int deleteByIDfromDB(int id);
 
+    // updates information by ID in database
     @Insert(UPDATE_BY_ID)
     public int insertUpdateByID(LocationWeather locationWeather);
-
-    @Select(CHECK_DUPLICATE_LOC)
-    public Boolean checkDuplicateLoc(String location);
-
-    @Select(CHECK_DUPLICATE_DATE)
-    public Boolean checkDuplicateDate(String date);
 
     // inserts results from "Fill Database" method
     @Select(CHECK_DUPLICATES)
     public int duplicateSearch(LocationWeather locationWeather);
 
+    // finds ID linked to location search
     @Select(FIND_ID)
     public int findID(String location);
 

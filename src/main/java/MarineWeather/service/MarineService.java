@@ -17,13 +17,6 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class MarineService {
 
-    // https://developer.worldweatheronline.com/
-    // 5e6a5cd41fa34d94b3f232909181207 - API Key (500/day)
-
-    // http://api.worldweatheronline.com/premium/v1/marine.ashx?key=5e6a5cd41fa34d94b3f232909181207&format=json&q=48.834,2.394
-
-    // http://api.worldweatheronline.com/premium/v1/marine.ashx?key= API_KEY &format=json&q= LOCATION (48.834,2.394)
-
     // linked to runnable "bean" in MarineWeather.Application (run)
     @Autowired
     RestTemplate restTemplate;
@@ -32,21 +25,22 @@ public class MarineService {
     @Autowired
     MarineMapper mapper;
 
-//    @Autowired
-//    SecurityControl securityControl;
-
     // searches Marine weather for location results - - location format: (48.834,2.394).
     public WWORoot searchMW(@RequestParam String location) {
 
+        // API key to access website information
         final String API_KEY = "5e6a5cd41fa34d94b3f232909181207";
 
+        // Website URL + API key + search parameters
         String url = "http://api.worldweatheronline.com/premium/v1/marine.ashx?key=" + API_KEY + "&format=json&q=" + location;
 
+        // prints URL to check results side by side with HostLocal (Postman)
         System.out.println(url);
+
         // searches for location in URL.
         WWORoot wwoResponse = restTemplate.getForObject(url, WWORoot.class);
         {
-            // set results to data.
+            // set results to fill database.
             fillDatabase(wwoResponse, location);
         }
         return wwoResponse;
@@ -62,7 +56,7 @@ public class MarineService {
         // pulls information from Weather array
         for (Weather weather : data.getData().getWeather()) {
 
-            // set new values onto temp Database
+            // set new values onto temp Database (must "import" location for duplicate checking)
             tempDB.setDate(weather.getDate());
             tempDB.setMaxtempF(weather.getMaxtempF());
             tempDB.setMintempF(weather.getMintempF());
@@ -72,6 +66,7 @@ public class MarineService {
             // double checks values for duplicates (inserts new data if none are found)
             try {
                 mapper.duplicateSearch(tempDB);
+                // if duplicate found, print exception with duplicate results.
             } catch (Exception e){
                 System.out.println("duplicate found: " + tempDB.toString());
             }

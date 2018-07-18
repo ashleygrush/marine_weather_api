@@ -20,9 +20,5 @@ public class Application {
          return builder.build();
     }
 
-
 }
 
-// localhost:8080/marineweather/Locationsearch?location=48.834,2.394
-
-// localhost:8080/marineweather/search?location=48.834,2.394
