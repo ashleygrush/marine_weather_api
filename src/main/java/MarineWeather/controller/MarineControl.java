@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import MarineWeather.service.MarineService;
 
-import java.util.ArrayList;
 
 // CRUD (create, retrieve, update, delete)
 
@@ -52,7 +51,7 @@ public class MarineControl {
 
 
     // POST - INSERT NEW INFORMATION
-    @PostMapping
+    @PostMapping // in Postman (Post - new body)
     public LocationWeather insertNew(
         @RequestBody LocationWeather locationweather) {
 
@@ -60,8 +59,8 @@ public class MarineControl {
     }
 
 
-    // PUT - UPDATE INFORMATION IN DATABASE
-    @PutMapping("/{id}")
+    // PUT - UPDATE INFORMATION IN DATABASE BY ID
+    @PutMapping("/{id}") // http://localhost:8080/marineweather/1 (Postman - POST)
     public LocationWeather updateID(
             @PathVariable("id") int id,
             @RequestBody LocationWeather locationWeather) {
