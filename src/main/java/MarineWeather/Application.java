@@ -22,3 +22,11 @@ public class Application {
 
 }
 
+
+// actual website link
+// http://api.worldweatheronline.com/premium/v1/marine.ashx?key=5e6a5cd41fa34d94b3f232909181207&format=json&q=48.834,2.394
+
+
+// local search
+// http://localhost:8080/marineweather/search?location=44.723,3.6784&API_Key=5e6a5cd41fa34d94b3f232909181207
+

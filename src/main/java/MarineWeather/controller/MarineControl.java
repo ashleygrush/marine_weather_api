@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import MarineWeather.service.MarineService;
 
+import java.security.InvalidKeyException;
+
 
 // CRUD (create, retrieve, update, delete)
 
@@ -21,13 +23,15 @@ public class MarineControl {
     @Autowired
     MarineService marineService;
 
+
     // GET - INFORMATION (/SEARCH) WEBSITE
     @RequestMapping("/search") // http://localhost:8080/marineweather/search?location=48.834,2.394
     public WWORoot search(
-            @RequestParam("location") String location) {
+            @RequestParam("location") String location,
+            @RequestParam("API_Key") String user_Key) throws InvalidKeyException {
 
         // sets data to search method in service class
-        WWORoot response = marineService.searchMW(location);
+        WWORoot response = marineService.searchMW(location, user_Key);
 
         return response;
     }

@@ -1,6 +1,5 @@
 package MarineWeather.service;
 
-//import MarineWeather.controller.SecurityControl;
 
 import MarineWeather.mappers.MarineMapper;
 import MarineWeather.model.MarineWeather.WWORoot;
@@ -11,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+
+import java.security.InvalidKeyException;
 
 // The Brains... BRAINS!!
 // Autowired into Controller
@@ -26,24 +27,31 @@ public class MarineService {
     MarineMapper mapper;
 
     // searches Marine weather for location results - - location format: (48.834,2.394).
-    public WWORoot searchMW(@RequestParam String location) {
+    public WWORoot searchMW(@RequestParam String location, @RequestParam String user_Key) throws InvalidKeyException {
 
-        // API key to access website information
-        final String API_KEY = "5e6a5cd41fa34d94b3f232909181207";
+        // import authentication method from security service class
+        SecurityService verify = new SecurityService();
 
-        // Website URL + API key + search parameters
-        String url = "http://api.worldweatheronline.com/premium/v1/marine.ashx?key=" + API_KEY + "&format=json&q=" + location;
+        // Verify API Key entered
+        if (verify.authentication(user_Key)) {
 
-        // prints URL to check results side by side with HostLocal (Postman)
-        System.out.println(url);
+            // Website URL + API key + search parameters
+            String url = "http://api.worldweatheronline.com/premium/v1/marine.ashx?key=" + user_Key + "&format=json&q=" + location;
 
-        // searches for location in URL.
-        WWORoot wwoResponse = restTemplate.getForObject(url, WWORoot.class);
-        {
-            // set results to fill database.
-            fillDatabase(wwoResponse, location);
+            // prints URL to check results side by side with HostLocal (Postman)
+            System.out.println(url);
+
+            // searches for location in URL.
+            WWORoot wwoResponse = restTemplate.getForObject(url, WWORoot.class);
+            {
+                // set results to fill database.
+                fillDatabase(wwoResponse, location);
+            }
+            return wwoResponse;
+        // if key doesn't work; throw exception.
+        } else {
+            throw new InvalidKeyException();
         }
-        return wwoResponse;
     }
 
 
