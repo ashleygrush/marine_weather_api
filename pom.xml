@@ -8,6 +8,7 @@
     <groupId>com.codingnomads</groupId>
     <artifactId>marine_weather_api</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -48,6 +49,13 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- RUNS TOMCAT -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
 
