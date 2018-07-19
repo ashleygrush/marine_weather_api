@@ -24,6 +24,14 @@ public class MarineControl {
     MarineService marineService;
 
 
+    // GET - TEST CONNECTION  // http://localhost:8080/marineweather/test
+    @RequestMapping("/test")
+    public String testConnection() {
+        String hello = "Connected.";
+        return hello;
+    }
+
+
     // GET - INFORMATION (/SEARCH) WEBSITE
     @RequestMapping("/search") // http://localhost:8080/marineweather/search?location=48.834,2.394
     public WWORoot search(
