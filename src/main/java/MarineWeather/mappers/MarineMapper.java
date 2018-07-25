@@ -31,8 +31,11 @@ public interface MarineMapper {
             "location = #{location} " +
             "WHERE id = #{id}";
 
+    String CHECK_DUPLICATES = "INSERT IGNORE INTO marineweather.locationweather (date, maxtempF, mintempF, location) " +
+            "VALUES (#{date}, #{maxtempF}, #{mintempF}, #{location})";
+
     // CHECKS FOR DUPLICATE VALUES
-    String CHECK_DUPLICATES = "INSERT INTO marineweather.locationweather " +
+    String CHECK_DUPLICATES_OLD = "INSERT INTO marineweather.locationweather " +
                                         "(date, maxtempF, mintempF, location) " +
                                     "SELECT " +
                                         "#{date}, #{maxtempF}, #{mintempF}, #{location} " +

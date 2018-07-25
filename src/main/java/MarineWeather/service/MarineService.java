@@ -7,11 +7,15 @@ import MarineWeather.model.MarineWeather.Weather;
 import MarineWeather.model.database.DBSearch;
 import MarineWeather.model.database.LocationWeather;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.InvalidKeyException;
+import java.util.logging.Logger;
 
 // The Brains... BRAINS!!
 // Autowired into Controller
@@ -43,10 +47,10 @@ public class MarineService {
 
             // searches for location in URL.
             WWORoot wwoResponse = restTemplate.getForObject(url, WWORoot.class);
-            {
+
                 // set results to fill database.
-                fillDatabase(wwoResponse, location);
-            }
+            fillDatabase(wwoResponse, location);
+
             return wwoResponse;
         // if key doesn't work; throw exception.
         } else {
@@ -81,9 +85,12 @@ public class MarineService {
         }
     }
 
-
     // GET - Searches database by ID
+    @Cacheable(value = "id", key = "#id")
     public DBSearch dbSearch(@RequestParam("id") int id) {
+
+        // test cache
+        System.out.println(" *** Cache Log - retrieving ID from database. Loading ID into cache. *** ");
 
         // import database
         DBSearch returnID = new DBSearch();
@@ -98,9 +105,12 @@ public class MarineService {
         return returnID;
     }
 
-
     // DELETE - Delete from database by ID
+    @CacheEvict(value = "id", key = "#id")
     public DBSearch deleteID(int id) {
+
+        // checks that ID is removed.
+        System.out.println(" *** Cache Log - removed ID from cache and database. *** ");
 
         // import database
         DBSearch removeID = new DBSearch();
@@ -115,9 +125,12 @@ public class MarineService {
         return removeID;
     }
 
-
     // POST - inserts new information into database
+    @CachePut(value = "id", key = "#id")
     public LocationWeather insertNew(LocationWeather data) {
+
+        // check's that value is added to cache.
+        System.out.println(" *** Cache Log - added value by ID to database and in cache. *** ");
 
         // pull from insertNew method
         LocationWeather newLoc = new LocationWeather();
@@ -135,9 +148,12 @@ public class MarineService {
         return newLoc;
     }
 
-
     // PUT - Updates information for existing information
+    @CachePut(value = "id", key = "#id")
     public LocationWeather updateID(@RequestParam("id") int id, LocationWeather data) {
+
+        // check's that value is updated.
+        System.out.println(" *** Cache Log - updated value by ID in database and in cache. *** ");
 
         // display ID Results (from dbSearch method)
         LocationWeather newVals = new LocationWeather();
@@ -156,5 +172,10 @@ public class MarineService {
         return newVals;
     }
 
+    // clears cache
+    @CacheEvict(value = "id", allEntries = false)
+    public void clearCache(){
+        System.out.println(" *** Cache Cleared. *** ");
+    }
 
 }

@@ -5,11 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+@EnableCaching
+public class Application { //extends SpringBootServletInitializer {
 
      // starts application to run
      public static void main(String[] args) {
@@ -22,10 +24,10 @@ public class Application extends SpringBootServletInitializer {
          return builder.build();
     }
 
-    @Override
-    protected SpringApplicationBuilder configure (SpringApplicationBuilder application){
-    return application.sources(Application.class);
-    }
+//    @Override
+//    protected SpringApplicationBuilder configure (SpringApplicationBuilder application){
+//    return application.sources(Application.class);
+//    }
 
 }
 
@@ -42,10 +44,14 @@ public class Application extends SpringBootServletInitializer {
 
 
 // local search
-// http://localhost:8080/marineweather/search?location=44.723,3.6784&API_Key=5e6a5cd41fa34d94b3f232909181207
+// http://localhost:8080/marineweather/search?location=42.623,2.6784&API_Key=5e6a5cd41fa34d94b3f232909181207
 
 
 // ************* TEST CONNECTION *********************
 
 // to test connection:
 // http://localhost:8080/marineweather/test
+
+// ************* DATABASE CONNECTION *****************
+
+// http://54.149.133.231:8080/marine_weather_api-1.0-SNAPSHOT/marineweather/search?location=41.823,3.6874&API_Key=5e6a5cd41fa34d94b3f232909181207

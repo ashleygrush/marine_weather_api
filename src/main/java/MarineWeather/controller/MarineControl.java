@@ -81,5 +81,13 @@ public class MarineControl {
         // returns id and updated database "map" to update method in service class
         return marineService.updateID(id, locationWeather);
     }
+
+
+    // DELETE - Clears cache
+    @RequestMapping(value = "/clearcache")
+    public void clearCache() {
+        marineService.clearCache();
+    }
+
 }
 
