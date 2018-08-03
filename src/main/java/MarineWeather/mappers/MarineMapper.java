@@ -31,17 +31,10 @@ public interface MarineMapper {
             "location = #{location} " +
             "WHERE id = #{id}";
 
+    // CHECKS FOR DUPLICATE VALUES
     String CHECK_DUPLICATES = "INSERT IGNORE INTO marineweather.locationweather (date, maxtempF, mintempF, location) " +
             "VALUES (#{date}, #{maxtempF}, #{mintempF}, #{location})";
 
-    // CHECKS FOR DUPLICATE VALUES
-    String CHECK_DUPLICATES_OLD = "INSERT INTO marineweather.locationweather " +
-                                        "(date, maxtempF, mintempF, location) " +
-                                    "SELECT " +
-                                        "#{date}, #{maxtempF}, #{mintempF}, #{location} " +
-                                "WHERE " +
-                                    "NOT EXISTS (SELECT * FROM marineweather.locationweather " +
-                                         "WHERE date = #{date} AND location = #{location})";
 
     // selects ID number from database by location
     String FIND_ID = "SELECT id " +

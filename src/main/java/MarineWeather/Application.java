@@ -31,10 +31,11 @@ public class Application { //extends SpringBootServletInitializer {
 
 }
 
+
 // ************* TO RUN LOCALLY ******************
 
 // to run locally again,
-// comment out added "provided" dependancy, extends SpringBootServleetInit. and Override above.
+// comment out database location in application.properties; added "provided" dependency in pom file and  extends SpringBootServleetInit. and Override above.
 
 
 // ************* IMPORTANT LINKS ******************
@@ -51,6 +52,7 @@ public class Application { //extends SpringBootServletInitializer {
 
 // to test connection:
 // http://localhost:8080/marineweather/test
+
 
 // ************* DATABASE CONNECTION *****************
 

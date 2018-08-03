@@ -86,7 +86,7 @@ public class MarineService {
     }
 
     // GET - Searches database by ID
-    @Cacheable(value = "id", key = "#id")
+    @Cacheable(value = "weather", key = "#id")
     public DBSearch dbSearch(@RequestParam("id") int id) {
 
         // test cache
@@ -106,7 +106,7 @@ public class MarineService {
     }
 
     // DELETE - Delete from database by ID
-    @CacheEvict(value = "id", key = "#id")
+    @CacheEvict(value = "weather", key = "#id")
     public DBSearch deleteID(int id) {
 
         // checks that ID is removed.
@@ -126,7 +126,7 @@ public class MarineService {
     }
 
     // POST - inserts new information into database
-    @CachePut(value = "id", key = "#id")
+    @CachePut(value = "weather", key = "#data")
     public LocationWeather insertNew(LocationWeather data) {
 
         // check's that value is added to cache.
@@ -149,7 +149,7 @@ public class MarineService {
     }
 
     // PUT - Updates information for existing information
-    @CachePut(value = "id", key = "#id")
+    @CachePut(value = "weather", key = "#data")
     public LocationWeather updateID(@RequestParam("id") int id, LocationWeather data) {
 
         // check's that value is updated.
@@ -173,7 +173,7 @@ public class MarineService {
     }
 
     // clears cache
-    @CacheEvict(value = "id", allEntries = false)
+    @CacheEvict(value = "weather", allEntries = false)
     public void clearCache(){
         System.out.println(" *** Cache Cleared. *** ");
     }
